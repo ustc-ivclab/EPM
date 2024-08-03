@@ -13,12 +13,27 @@
 </div>
 
 <div>
-   <strong>MMSP2024, Under Peer Review</strong>
+   <strong>MMSP2024</strong>
 </div>
 <div>
     <h4 align="center">
     </h4>
 </div>
+
+
+</div>
+
+## :mega: Updates
+- **2024.08.03**: Our paper is accepted by MMSP2024 as a regular paper.
+
+## :desktop_computer: Requirements
+
+- Pytorch >= 1.13.1
+- CUDA >= 11.3
+- Other required packages in `pip_opt.sh`
+```
+
+
 
 ---
 
@@ -33,6 +48,8 @@ Although the partition map-based fast block partitioning algorithm for VVC intra
 ![Performance Evaluation](BDBR_ETS.png)
 
 
+### Contact
+If you have any questions, please feel free to reach out at `xmfeng2000@mail.ustc.edu.cn`. 
 
 ## :running_woman: Previous work
 
