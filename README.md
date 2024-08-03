@@ -124,13 +124,16 @@ Here are the explanation for important arguments:
 ## :love_you_gesture: Citation
 If you find our work useful for your research, please consider citing the paper:
 ```
-@inproceedings{liang2023iterative,
-  title={Iterative prompt learning for unsupervised backlit image enhancement},
-  author={Liang, Zhexin and Li, Chongyi and Zhou, Shangchen and Feng, Ruicheng and Loy, Chen Change},
-  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
-  pages={8094--8103},
-  year={2023}
-}
+@article{feng2023partition,
+  title={Partition map prediction for fast block partitioning in VVC intra-frame coding},
+  author={Feng, Aolin and Liu, Kang and Liu, Dong and Li, Li and Wu, Feng},
+  journal={IEEE Transactions on Image Processing},
+  year={2023},
+  publisher={IEEE},
+  volume={32},
+  number={},
+  pages={2237-2251},
+  doi={10.1109/TIP.2023.3266165}}
 ```
 
 
