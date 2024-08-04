@@ -47,60 +47,64 @@ Next, we introduce token sparsification to select the most informative tokens us
 ## :running_woman: Inference
 
 ### Prepare Testing Data:
-You can put the testing images in the `input` folder. If you want to test the backlit images, you can download the BAID test dataset and the Backlit300 dataset from [[Google Drive](https://drive.google.com/drive/folders/1tnZdCxmWeOXMbzXKf-V4HYI4rBRl90Qk?usp=sharing) | [BaiduPan (key:1234)](https://pan.baidu.com/s/1bdGTpVeaHNLWN4uvYLRXXA)].
+You can put the JVET CTC test video sequences in the `[input_dir]` folder. 
+<!-- If you want to test the backlit images, you can download the BAID test dataset and the Backlit300 dataset from [[Google Drive](https://drive.google.com/drive/folders/1tnZdCxmWeOXMbzXKf-V4HYI4rBRl90Qk?usp=sharing) | [BaiduPan (key:1234)](https://pan.baidu.com/s/1bdGTpVeaHNLWN4uvYLRXXA)]. -->
 
 ### Testing:
 
 ```
-python test.py
+python Inference_QBD.py --C_ratio 0.125 --jobID DySA_C0.125_QP --inputDir [input_dir] --outDir [output_dir]  --batchSize 200 --startSqeID 0 --SeqNum 22 --checkpoints_dir [model_zoo_dir]
 ```
-The path of input images and output images and checkpoints can be changed. 
-
+The path of output partition map `[output_dir]` and checkpoints `[model_zoo_dir]` can be changed. 
+<!-- 
 Example usage:
 ```
 python test.py -i ./Backlit300 -o ./inference_results/Backlit300 -c ./pretrained_models/enhancement_model.pth
-```
+``` -->
 
 ## :train: Training
 
-### Prepare Training Data and the initial weights:
-You should download the backlit and reference image dataset and put it under the repo. In our experiment, we randomly select 380 backlit images from BAID training dataset and 384 well-lit images from DIV2K dataset as the unpaired training data. We provide the training data we use at [[Google Drive](https://drive.google.com/drive/folders/1X1tawqmUsn69T24VmHSl_qmEFxGLzMf0?usp=sharing) | [BaiduPan (key:1234)](https://pan.baidu.com/s/1a0_mUpoFJszjH1eHfBbJPw)] for your reference.
+### Prepare Training Data:
 
-You should also download the initial prompt pair checkpoint (`init_prompt_pair.pth`) from [[Release](https://github.com/ZhexinLiang/CLIP-LIT/releases/tag/v1.0.0) | [Google Drive](https://drive.google.com/drive/folders/1mImPIUaYbXfZ_CHPvdNK-xKrt94abQO5?usp=sharing) | [BaiduPan (key:1234)](https://pan.baidu.com/s/1H4lOrLaYlS0PYTF4pgfSDw)] and put it into `pretrained_models/init_pretrained_models` folder.
+In the experiments, we use video sequences from [CDVL](https://www.cdvl.org/) with multiple resolutions {3840x2160, 1920x1050, 1280x720} and part of DIV2K image dataset with resolution 1920x1280 to construct the training and validation datasets.
 
-After the data and the initial model weights are prepared, you can use the command to change the training data path, fine-tune the prompt and train the model.
+<!-- You should download the backlit and reference image dataset and put it under the repo. In our experiment, we randomly select 380 backlit images from BAID training dataset and 384 well-lit images from DIV2K dataset as the unpaired training data. We provide the training data we use at [[Google Drive](https://drive.google.com/drive/folders/1X1tawqmUsn69T24VmHSl_qmEFxGLzMf0?usp=sharing) | [BaiduPan (key:1234)](https://pan.baidu.com/s/1a0_mUpoFJszjH1eHfBbJPw)] for your reference. -->
 
-If you don't want to download the initial prompt pair, you can train without the initial checkpoints using the command below. But in this way, the number of the total iterations should be at least $50K$ based on our experiments.
+<!-- You should also download the initial prompt pair checkpoint (`init_prompt_pair.pth`) from [[Release](https://github.com/ZhexinLiang/CLIP-LIT/releases/tag/v1.0.0) | [Google Drive](https://drive.google.com/drive/folders/1mImPIUaYbXfZ_CHPvdNK-xKrt94abQO5?usp=sharing) | [BaiduPan (key:1234)](https://pan.baidu.com/s/1H4lOrLaYlS0PYTF4pgfSDw)] and put it into `pretrained_models/init_pretrained_models` folder. -->
+
+<!-- After the data and the initial model weights are prepared, you can use the command to change the training data path. -->
+
+<!-- If you don't want to download the initial prompt pair, you can train without the initial checkpoints using the command below. But in this way, the number of the total iterations should be at least $50K$ based on our experiments. -->
  
 ### Commands
 Example usage:
 ```
-python train.py -b ./train_data/BAID_380/resize_input/ -r ./train_data/DIV2K_384/
+python Train_QBD_Dy.py --aux_loss --C_ratio 0.0625 --jobID DyLight_SA_C0.0625 --isLuma --post_test --classification --inputDir /data/fengxm/VVC_Intra/ --outDir /model/fengxm/AVS3/pmp_intra/sa --model_type DyLight_SA --lr 5e-4 --dr 20 --epoch 60 --qp 22 --batchSize 1200 --train_num_workers 8 --predID 2 --classification
 ```
 There are other arguments you may want to change. You can change the hyperparameters using the cmd line.
 
 For example, you can use the following command to **train from scratch**.
 ```
-python train.py \
- -b ./train_data/BAID_380/resize_input/ \
- -r ./train_data/DIV2K_384/             \
- --train_lr 0.00002                     \
- --prompt_lr 0.000005                   \
- --eta_min 5e-6                         \
- --weight_decay 0.001                   \
- --num_epochs 3000                      \
- --num_reconstruction_iters 1000        \
- --num_clip_pretrained_iters 8000       \
- --train_batch_size 8                   \
- --prompt_batch_size 16                 \
- --display_iter 20                      \
- --snapshot_iter 20                     \
- --prompt_display_iter 20               \
- --prompt_snapshot_iter 100             \
- --load_pretrain False                  \
- --load_pretrain_prompt False
+python Train_QBD_Dy.py              \
+ --isLuma \
+ --post_test \
+ --classification \
+ --aux_loss \
+ --C_ratio                  0.0625  \
+ --jobID                    DyLight_SA_C0.0625 \
+ --inputDir                 /data/fengxm/VVC_Intra/ \
+ --outDir                   /model/fengxm/AVS3/pmp_intra/sa \
+ --model_type               DyLight_SA \
+ --lr                       5e-4 \
+ --dr                       20 \
+ --epoch                    60 \
+ --qp                       22 \
+ --batchSize                1200 \
+ --train_num_workers        8 \
+ --predID                   2 \
+ --classification
 ```
-Here are the explanation for important arguments:
+<!-- Here are the explanation for important arguments:
 - `b`: path to the input images (backlit images).
 - `r`: path to the reference images (well-lit images).
 - `train_lr`: the learning rate for the enhancement model training.
@@ -115,10 +119,7 @@ Here are the explanation for important arguments:
 - `prompt_display_iter`: the frequency to display the training log during the prompt pair learning.
 - `prompt_snapshot_iter`: the frequency to save the checkpoint during the prompt pair learning.
 - `load_pretrain`: whether to load the pretrained enhancement model.
-- `load_pretrain_prompt`: whether to load the pretrained prompt pair.
-
-- 
-
+- `load_pretrain_prompt`: whether to load the pretrained prompt pair. -->
 
 
 ## :love_you_gesture: Citation
