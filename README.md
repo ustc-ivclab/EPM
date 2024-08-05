@@ -36,7 +36,7 @@ Next, we introduce token sparsification to select the most informative tokens us
 </div>
 
 ## :mega: Updates
-- **2024.08.03**: Our paper is accepted by MMSP2024 as a regular paper.
+- **2024.08.03**: Our paper is accepted by MMSP2024 as a regular paper. The complete source code will be released before October 1st.
 
 ## :desktop_computer: Requirements
 
@@ -123,7 +123,7 @@ python Train_QBD_Dy.py              \
 
 
 ## :love_you_gesture: Citation
-If you find our work useful for your research, please consider citing the paper:
+If you find our work useful for your research, please consider citing the paper and our previous paper:
 ```
 @article{feng2023partition,
   title={Partition map prediction for fast block partitioning in VVC intra-frame coding},
