@@ -36,7 +36,7 @@ Next, we introduce token sparsification to select the most informative tokens us
 </div>
 
 ## :mega: Updates
-- **2024.08.03**: Our paper is accepted by MMSP2024 as a regular paper. The complete source code will be released before October 1st.
+- **2024.08.03**: Our paper is accepted by MMSP2024 as a oral paper.
 
 ## :desktop_computer: Requirements
 
